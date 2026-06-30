@@ -1,40 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prajapati AI</title>
-    <style>
-        :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.7); --accent: #38bdf8; --text: #f8fafc; }
-        body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .chat-container { width: 95%; max-width: 500h; height: 90vh; background: var(--card); backdrop-filter: blur(10px); border-radius: 12px; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
-        .chat-header { padding: 15px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        .chat-header h2 { margin: 0; color: var(--accent); font-size: 1.2rem; }
-        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .message { padding: 10px 14px; border-radius: 8px; max-width: 80%; word-break: break-word; font-size: 0.95rem; }
-        .user-message { background: var(--accent); color: #000; align-self: flex-end; }
-        .ai-message { background: rgba(255,255,255,0.1); color: var(--text); align-self: flex-start; }
-        .chat-input-area { padding: 12px; background: rgba(0,0,0,0.2); display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .chat-input-area input { flex: 1; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: #000; color: #fff; outline: none; }
-        .chat-input-area button { padding: 10px 16px; background: var(--accent); border: none; color: #000; border-radius: 6px; font-weight: bold; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-<div class="chat-container">
-    <div class="chat-header">
-        <h2 id="avatar-mood">Prajapati AI • Connected</h2>
-    </div>
-    <div class="chat-messages" id="chat-messages">
-        <div class="message ai-message">Welcome Brijesh! Main Prajapati AI Core entity hoon. Poocho kya poochna hai.</div>
-    </div>
-    <div class="chat-input-area">
-        <input type="text" id="user-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+<div style="padding: 10px; text-align: center; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 10px;">
+    <label for="api-provider" style="color: #fff; font-size: 0.85rem; margin-right: 8px;">Select AI Engine:</label>
+    <select id="api-provider" style="padding: 6px 12px; background: #1e293b; color: #38bdf8; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); outline: none; font-weight: bold;">
+        <option value="gemini">Google Gemini (No CORS Error)</option>
+        <option value="groq">Groq Llama 3.3 (Bypass Route)</option>
+        <option value="openai">OpenAI GPT (Bypass Route)</option>
+        <option value="deepseek">DeepSeek AI (Bypass Route)</option>
+    </select>
 </div>
-
-<script src="app.js"></script>
-</body>
-</html>
-
