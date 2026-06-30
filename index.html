@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prajapati AI</title>
-    </head>
-<body>
-    <div id="chat-messages"></div>
-    <input type="text" id="user-input" onkeypress="handleKeyPress(event)">
-    <button onclick="sendMessage()">Send</button>
+<div style="padding: 10px; text-align: center; margin-bottom: 5px;">
+    <select id="api-engine" style="padding: 8px 12px; background: #1e293b; color: #38bdf8; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; font-weight: bold; outline: none;">
+        <option value="gemini">Google Gemini (Default Direct Route)</option>
+        <option value="groq">Groq Llama 3.3 (CORS AllOrigins Tunnel)</option>
+    </select>
+</div>
 
-    <script src="app.js"></script>
-</body>
-</html>
+<div id="chat-messages"></div>
+<input type="text" id="user-input" onkeypress="handleKeyPress(event)">
+<button onclick="sendMessage()">Send</button>
