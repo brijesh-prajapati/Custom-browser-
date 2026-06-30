@@ -1,9 +1,15 @@
-<div style="padding: 10px; text-align: center; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 10px;">
-    <label for="api-provider" style="color: #fff; font-size: 0.85rem; margin-right: 8px;">Select AI Engine:</label>
-    <select id="api-provider" style="padding: 6px 12px; background: #1e293b; color: #38bdf8; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); outline: none; font-weight: bold;">
-        <option value="gemini">Google Gemini (No CORS Error)</option>
-        <option value="groq">Groq Llama 3.3 (Bypass Route)</option>
-        <option value="openai">OpenAI GPT (Bypass Route)</option>
-        <option value="deepseek">DeepSeek AI (Bypass Route)</option>
-    </select>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prajapati AI</title>
+    </head>
+<body>
+    <div id="chat-messages"></div>
+    <input type="text" id="user-input" onkeypress="handleKeyPress(event)">
+    <button onclick="sendMessage()">Send</button>
+
+    <script src="app.js"></script>
+</body>
+</html>
