@@ -3,20 +3,16 @@ title = Prajapati Browser
 package.name = prajapatibrowser
 package.domain = com.brijesh
 
-# Source targets
 source.dir = .
 source.include_exts = py,png,jpg,json
-
-# Version configuration matrix
 version = 1.0
 
-# Base engine requirements
-requirements = python3,android,kivy
+# Kivy ko poori tarah hata diya taaki compilation crash na ho
+requirements = python3,android
 
-# Standard stable bootstrap layout
-p4a.bootstrap = sdl2
+# Pure Native Android Webview Engine configuration
+p4a.bootstrap = webview
 
-# Android settings targets
 android.permissions = INTERNET
 android.archs = arm64-v8a, armeabi-v7a
 android.minapi = 21
