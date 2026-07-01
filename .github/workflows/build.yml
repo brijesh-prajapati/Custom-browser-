@@ -12,7 +12,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Android Build Dependencies
+      - name: Install Pure Android Build Tools
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
@@ -20,12 +20,13 @@ jobs:
           pip install --upgrade pip
           pip install cython==0.29.36 buildozer virtualenv sh
 
-      - name: Build with Buildozer
+      - name: Build Android Engine Artifact
         run: |
           export PATH=$PATH:~/.local/bin
+          buildozer android clean
           yes | buildozer -v android debug
 
-      - name: Upload APK Artifact
+      - name: Export Output Package
         uses: actions/upload-artifact@v4
         with:
           name: Prajapati-Browser-APK
