@@ -1,41 +1,43 @@
 import os
+import time
 from android.runnable import run_on_ui_thread
 from jnius import autoclass
 
-# Android System Classes Hooks
-Activity = autoclass('org.kivy.android.PythonActivity').mActivity
+# Core Android Native Interface Hooks
+PythonActivity = autoclass('org.kivy.android.PythonActivity')
 WebView = autoclass('android.webkit.WebView')
 WebViewClient = autoclass('android.webkit.WebViewClient')
 
 class PrajapatiBrowser:
     def __init__(self):
-        self.create_window()
+        self.launch_webview()
 
     @run_on_ui_thread
-    def create_window(self):
-        activity = Activity
+    def launch_webview(self):
+        activity = PythonActivity.mActivity
         webview = WebView(activity)
         
-        # Webview runtime setups
+        # Enable JavaScript and Storage for smooth AI Chat UI
         settings = webview.getSettings()
         settings.setJavaScriptEnabled(True)
         settings.setDomStorageEnabled(True)
-        settings.setAllowUniversalAccessFromFileURLs(True)
+        settings.setDatabaseEnabled(True)
+        settings.setAllowFileAccess(True)
         
         webview.setWebViewClient(WebViewClient())
         
-        # Aapki live application url load target
-        target_url = "https://brijesh-prajapati.github.io/Personal-ai/"
+        # Target Live Website URL
+        target_url = "https://brijesh-prajapati.github.io/Custom-browser-/"
         webview.loadUrl(target_url)
         
+        # Set webview as the full screen view
         activity.setContentView(webview)
 
 if __name__ == '__main__':
-    # Initialize Core Application Engine
+    # Engine start
     PrajapatiBrowser()
     
-    # Keeping main python loop alive safely
-    import time
+    # Keep the background python process alive safely
     while True:
         time.sleep(1)
         
