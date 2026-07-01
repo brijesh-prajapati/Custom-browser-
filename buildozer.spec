@@ -3,20 +3,20 @@ title = Prajapati Browser
 package.name = prajapatibrowser
 package.domain = com.brijesh
 
-# Source directories
+# Source targets
 source.dir = .
 source.include_exts = py,png,jpg,json
 
-# Explicit Version Definition Matrix (Crucial Fix)
+# Version configuration matrix
 version = 1.0
 
-# Requirements setup
-requirements = python3,android
+# Base engine requirements
+requirements = python3,android,kivy
 
-# Correct Bootstrap Parameter (Crucial Fix)
-p4a.bootstrap = webview
+# Standard stable bootstrap layout
+p4a.bootstrap = sdl2
 
-# System Architectures and Permissions
+# Android settings targets
 android.permissions = INTERNET
 android.archs = arm64-v8a, armeabi-v7a
 android.minapi = 21
