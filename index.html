@@ -3,86 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prajapati AI</title>
+    <title>Prajapati Browser</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; flex-direction: column; height: 100vh; }
-        header { background: #1e293b; padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; border-bottom: 1px solid #334155; color: #38bdf8; }
-        #chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .message { max-width: 75%; padding: 12px 16px; border-radius: 12px; line-height: 1.5; font-size: 0.95rem; word-wrap: break-word; }
-        .user-message { background-color: #0284c7; align-self: flex-end; color: #ffffff; border-bottom-right-radius: 2px; }
-        .ai-message { background-color: #1e293b; align-self: flex-start; color: #f1f5f9; border-bottom-left-radius: 2px; border: 1px solid #334155; }
-        #input-area { background: #1e293b; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334155; }
-        input { flex: 1; padding: 12px; background: #0f172a; border: 1px solid #475569; border-radius: 8px; color: #fff; font-size: 1rem; outline: none; }
-        input:focus { border-color: #38bdf8; }
-        button { background: #0284c7; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #0369a1; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: #0f172a; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        /* Browser Navigation Bar Toolbar */
+        #browser-navbar { background: #1e293b; padding: 10px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid #334155; }
+        #url-input { flex: 1; padding: 10px 14px; background: #0f172a; border: 1px solid #475569; border-radius: 20px; color: #fff; font-size: 0.95rem; outline: none; }
+        #url-input:focus { border-color: #38bdf8; }
+        .nav-btn { background: #334155; color: white; border: none; width: 38px; height: 38px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-btn:hover { background: #475569; }
+        #go-btn { background: #0284c7; border-radius: 20px; padding: 0 18px; width: auto; }
+        #go-btn:hover { background: #0369a1; }
+
+        /* Webview Container viewport */
+        #web-viewport { flex: 1; width: 100%; border: none; background: #fff; }
     </style>
 </head>
 <body>
 
-    <header>Prajapati AI • Live</header>
-
-    <div id="chat-container">
-        <div class="message ai-message">Welcome Brijesh! Main Prajapati AI entity hoon. Poocho kya poochna hai.</div>
+    <div id="browser-navbar">
+        <button class="nav-btn" onclick="goBack()">◀</button>
+        <button class="nav-btn" onclick="goForward()">▶</button>
+        <button class="nav-btn" onclick="reloadPage()">🔄</button>
+        <input type="text" id="url-input" value="https://google.com" onkeypress="if(event.key==='Enter') navigateToUrl()">
+        <button class="nav-btn" id="go-btn" onclick="navigateToUrl()">Go</button>
     </div>
 
-    <div id="input-area">
-        <input type="text" id="user-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+    <iframe id="web-viewport" src="https://google.com"></iframe>
 
     <script>
-        // Service Worker Registration for PWA Support
+        // Service Worker for App Native Launch
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGU9PmVuYm9keSk7').catch(() => {});
         }
 
-        let chatHistory = [];
-        const MATRIX_KEY = "AI" + "zaSy" + "D9F" + "fLg" + "kCg" + "Xg5" + "jH8" + "fD0" + "bV6" + "sK9" + "xL2" + "pM4" + "nQ";
+        const iframe = document.getElementById('web-viewport');
+        const urlInput = document.getElementById('url-input');
 
-        async function sendMessage() {
-            const inputEl = document.getElementById('user-input');
-            const text = inputEl.value.trim();
-            if (!text) return;
-
-            appendMessage(text, 'user-message');
-            inputEl.value = '';
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MATRIX_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [...chatHistory, { role: "user", parts: [{ text: text }] }],
-                        systemInstruction: { parts: [{ text: "You are Prajapati AI, a smart assistant built for Brijesh Achhelal Prajapati." }] }
-                    })
-                });
-
-                const data = await response.json();
-                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-                    const out = data.candidates[0].content.parts[0].text;
-                    appendMessage(out, 'ai-message');
-                    chatHistory.push({ role: "user", parts: [{ text: text }] });
-                    chatHistory.push({ role: "model", parts: [{ text: out }] });
-                } else {
-                    throw new Error("Invalid payload structure");
-                }
-            } catch (err) {
-                console.error(err);
-                appendMessage("⚠️ Connection error or API key issue.", 'ai-message');
+        function navigateToUrl() {
+            let url = urlInput.value.trim();
+            if (!url) return;
+            
+            // Add protocol if missing
+            if (!/^https?:\/\//i.test(url)) {
+                url = 'https://' + url;
             }
+            urlInput.value = url;
+            iframe.src = url;
         }
 
-        function appendMessage(text, className) {
-            const container = document.getElementById('chat-container');
-            const div = document.createElement('div');
-            div.className = `message ${className}`;
-            div.innerText = text;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
+        function goBack() { try { window.history.back(); } catch(e){} }
+        function goForward() { try { window.history.forward(); } catch(e){} }
+        function reloadPage() { iframe.src = iframe.src; }
     </script>
 </body>
 </html>
