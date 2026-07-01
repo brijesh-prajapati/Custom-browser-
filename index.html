@@ -3,61 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prajapati Browser</title>
-    <link rel="manifest" href="manifest.json">
+    <title>Prajapati Web Browser</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background: #0f172a; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        /* Browser Navigation Bar Toolbar */
         #browser-navbar { background: #1e293b; padding: 10px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid #334155; }
         #url-input { flex: 1; padding: 10px 14px; background: #0f172a; border: 1px solid #475569; border-radius: 20px; color: #fff; font-size: 0.95rem; outline: none; }
         #url-input:focus { border-color: #38bdf8; }
         .nav-btn { background: #334155; color: white; border: none; width: 38px; height: 38px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .nav-btn:hover { background: #475569; }
         #go-btn { background: #0284c7; border-radius: 20px; padding: 0 18px; width: auto; }
-        #go-btn:hover { background: #0369a1; }
-
-        /* Webview Container viewport */
         #web-viewport { flex: 1; width: 100%; border: none; background: #fff; }
     </style>
 </head>
 <body>
 
     <div id="browser-navbar">
-        <button class="nav-btn" onclick="goBack()">◀</button>
-        <button class="nav-btn" onclick="goForward()">▶</button>
-        <button class="nav-btn" onclick="reloadPage()">🔄</button>
-        <input type="text" id="url-input" value="https://google.com" onkeypress="if(event.key==='Enter') navigateToUrl()">
+        <button class="nav-btn" onclick="document.getElementById('web-viewport').contentWindow.history.back()">◀</button>
+        <button class="nav-btn" onclick="document.getElementById('web-viewport').contentWindow.history.forward()">▶</button>
+        <input type="text" id="url-input" value="https://bing.com" onkeypress="if(event.key==='Enter') navigateToUrl()">
         <button class="nav-btn" id="go-btn" onclick="navigateToUrl()">Go</button>
     </div>
 
-    <iframe id="web-viewport" src="https://google.com"></iframe>
+    <iframe id="web-viewport" src="https://bing.com"></iframe>
 
     <script>
-        // Service Worker for App Native Launch
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGU9PmVuYm9keSk7').catch(() => {});
-        }
-
-        const iframe = document.getElementById('web-viewport');
-        const urlInput = document.getElementById('url-input');
-
         function navigateToUrl() {
-            let url = urlInput.value.trim();
+            let url = document.getElementById('url-input').value.trim();
             if (!url) return;
-            
-            // Add protocol if missing
             if (!/^https?:\/\//i.test(url)) {
                 url = 'https://' + url;
             }
-            urlInput.value = url;
-            iframe.src = url;
+            document.getElementById('url-input').value = url;
+            document.getElementById('web-viewport').src = url;
         }
-
-        function goBack() { try { window.history.back(); } catch(e){} }
-        function goForward() { try { window.history.forward(); } catch(e){} }
-        function reloadPage() { iframe.src = iframe.src; }
     </script>
 </body>
 </html>
