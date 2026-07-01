@@ -13,19 +13,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Direct Native Fullscreen WebView Instantiation
         myWebView = new WebView(this);
         WebSettings webSettings = myWebView.getSettings();
         
-        // Runtime Sandbox Web Configurations
-        webSettings.setJavaScriptEnabled(True);
-        webSettings.setDomStorageEnabled(True);
-        webSettings.setDatabaseEnabled(True);
-        webSettings.setBuiltInZoomControls(False);
+        // Lowercase booleans fixed (strict Java rules)
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setBuiltInZoomControls(false);
         
         myWebView.setWebViewClient(new WebViewClient());
-        
-        // Target Application Route Setup
         myWebView.loadUrl("https://brijesh-prajapati.github.io/Custom-browser-/");
 
         setContentView(myWebView);
@@ -40,4 +37,3 @@ public class MainActivity extends Activity {
         }
     }
 }
-
