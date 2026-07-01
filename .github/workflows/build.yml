@@ -1,5 +1,8 @@
-name: Build Android Java APK & Create Release
+name: Build Android Java APK & Auto Release
 on: [push, workflow_dispatch]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -19,13 +22,14 @@ jobs:
           ./gradlew assembleDebug --no-daemon
 
       - name: Create Automatic Release and Upload APK
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: Prajapati Browser Release v1.0.${{ github.run_number }}
           draft: false
           prerelease: false
           files: |
+            app/build/outputs/apk/debug/*.apk
             **/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
