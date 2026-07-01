@@ -7,28 +7,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python Context
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install Pure Android Build Tools
+      - name: Install Android Build Dependencies
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y build-essential ccache git zlib1g-dev libncurses5:i386 libstdc++6:i386 zlib1g:i386 unzip openjdk-17-jdk python3-dev cmake
-          sudo apt-get install -y libsqlite3-dev sqlite3 bzip2 libbz2-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblzma-dev libreadline-dev libffi-dev uuid-dev libncursesw5-dev
+          sudo apt-get install -y build-essential ccache git zlib1g-dev libncurses5:i386 libstdc++6:i386 zlib1g:i386 unzip openjdk-17-jdk python3-dev cmake libsqlite3-dev sqlite3 bzip2 libbz2-dev libssl-dev openssl libgdbm-dev libgdbm-compat-dev liblzma-dev libreadline-dev libffi-dev uuid-dev libncursesw5-dev
           pip install --upgrade pip
           pip install cython==0.29.36 buildozer virtualenv sh
 
-      - name: Build Android Engine Artifact
+      - name: Build with Buildozer
         run: |
           export PATH=$PATH:~/.local/bin
           yes | buildozer -v android debug
 
-      - name: Export Output Package
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Prajapati-Core-Browser
+          name: Prajapati-Browser-APK
           path: bin/*.apk
           
