@@ -1,34 +1,41 @@
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
+import os
+from android.runnable import run_on_ui_thread
 from jnius import autoclass
 
-class BrowserApp(App):
-    def build(self):
-        layout = BoxLayout(orientation='vertical')
-        
-        # Native Android Android Components
-        PythonActivity = autoclass('org.kivy.android.PythonActivity')
-        WebView = autoclass('android.webkit.WebView')
-        WebViewClient = autoclass('android.webkit.WebViewClient')
-        
-        activity = PythonActivity.mActivity
+# Android System Classes Hooks
+Activity = autoclass('org.kivy.android.PythonActivity').mActivity
+WebView = autoclass('android.webkit.WebView')
+WebViewClient = autoclass('android.webkit.WebViewClient')
+
+class PrajapatiBrowser:
+    def __init__(self):
+        self.create_window()
+
+    @run_on_ui_thread
+    def create_window(self):
+        activity = Activity
         webview = WebView(activity)
         
-        # Disable CORS & Enable Javascript
+        # Webview runtime setups
         settings = webview.getSettings()
         settings.setJavaScriptEnabled(True)
         settings.setDomStorageEnabled(True)
-        settings.setAllowFileAccessFromFileURLs(True)
         settings.setAllowUniversalAccessFromFileURLs(True)
         
         webview.setWebViewClient(WebViewClient())
         
-        # Aapka direct interface link
-        webview.loadUrl("https://brijesh-prajapati.github.io/Personal-ai/")
+        # Aapki live application url load target
+        target_url = "https://brijesh-prajapati.github.io/Personal-ai/"
+        webview.loadUrl(target_url)
         
-        layout.add_widget(webview)
-        return layout
+        activity.setContentView(webview)
 
 if __name__ == '__main__':
-    BrowserApp().run()
-  
+    # Initialize Core Application Engine
+    PrajapatiBrowser()
+    
+    # Keeping main python loop alive safely
+    import time
+    while True:
+        time.sleep(1)
+        
