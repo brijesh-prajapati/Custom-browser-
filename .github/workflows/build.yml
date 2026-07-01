@@ -1,4 +1,4 @@
-name: Build Android Java APK
+name: Build Android Java APK & Create Release
 on: [push, workflow_dispatch]
 
 jobs:
@@ -16,11 +16,17 @@ jobs:
       - name: Build Application with Gradle
         run: |
           chmod +x gradlew || true
-          gradle assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK Artifact Target
-        uses: actions/upload-artifact@v4
+      - name: Create Automatic Release and Upload APK
+        uses: softprops/action-gh-release@v1
         with:
-          name: Prajapati-Core-Browser
-          path: "**/build/outputs/apk/debug/*.apk"
+          tag_name: v1.0.${{ github.run_number }}
+          name: Prajapati Browser Release v1.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+          files: |
+            **/build/outputs/apk/debug/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
